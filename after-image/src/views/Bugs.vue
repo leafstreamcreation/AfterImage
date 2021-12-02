@@ -12,7 +12,6 @@
 
 export default {
   name: "Bugs",
-  components: {
-  },
+  components: {},
 };
 </script>

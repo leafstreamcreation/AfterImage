@@ -12,7 +12,6 @@
 
 export default {
   name: "Intentions",
-  components: {
-  },
+  components: {},
 };
 </script>

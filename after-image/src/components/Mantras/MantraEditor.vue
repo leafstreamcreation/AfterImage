@@ -20,19 +20,19 @@ export default {
   components: {},
   emits: ["finishEdit"],
   props: {
-      mantras: Array
+    mantras: Array,
   },
   data() {
-      return {
-          state: this.mantras,
-          visible: false,
-      };
+    return {
+      state: this.mantras,
+      visible: false,
+    };
   },
   methods: {
-      toggleList() {
-          this.visible = !this.visible;
-          this.$emit('finishEdit', this.state);
-      },
-  }
+    toggleList() {
+      this.visible = !this.visible;
+      this.$emit("finishEdit", this.state);
+    },
+  },
 };
 </script>

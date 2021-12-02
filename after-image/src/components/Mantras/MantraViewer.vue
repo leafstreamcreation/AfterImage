@@ -1,6 +1,6 @@
 <template>
   <div class="mantra-viewer">
-      <h1>Mantra Viewer</h1>
+    <h1>Mantra Viewer</h1>
   </div>
 </template>
 
@@ -9,7 +9,6 @@
 
 export default {
   name: "MantraViewer",
-  components: {
-  },
+  components: {},
 };
 </script>
