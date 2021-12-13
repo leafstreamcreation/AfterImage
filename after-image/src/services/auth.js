@@ -6,11 +6,14 @@ const apiHandle = axios.create({
 
 const authService = {
   login(data, params) {
-    console.log(data);
     return apiHandle
-      .post("/login", { password: data }, {
-        params,
-      })
+      .post(
+        "/login",
+        { password: data },
+        {
+          params,
+        }
+      )
       .then(successStatus)
       .catch(internalServerError);
   },

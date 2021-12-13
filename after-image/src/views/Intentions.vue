@@ -13,5 +13,13 @@
 export default {
   name: "Intentions",
   components: {},
+  computed: {
+    tasks() {
+      return this.$store.state.tasks;
+    },
+  },
+  mounted() {
+    console.log(this.tasks);
+  },
 };
 </script>

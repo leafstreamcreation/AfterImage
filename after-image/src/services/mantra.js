@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiHandle = axios.create({
-  baseURL: `${process.env.DB_URL}/mantra`,
+  baseURL: `${process.env.VUE_APP_DB_URL}/mantra`,
 });
 
 const mantraService = {

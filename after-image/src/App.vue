@@ -14,15 +14,61 @@
 import Login from "./views/Login.vue";
 
 export default {
+  components: {
+    Login,
+  },
+  data() {
+    return {
+      mantraShuffler: new Shuffler(),
+      intervalId: null,
+    };
+  },
   computed: {
     loggedOut() {
       return this.$store.state.apiSession === null;
     },
+    mantras() {
+      return this.$store.state.mantras.map((mantra) => mantra.text);
+    },
+    currentMantra() {
+      return this.$store.state.currentMantra;
+    },
   },
-  components: {
-    Login,
+  methods: {
+    getNextMantra() {
+      if (this.mantraShuffler.elements.length === 0)
+        this.mantraShuffler = new Shuffler(this.mantras);
+      this.$store.commit("newCurrentMantra", this.mantraShuffler.drawNext());
+    },
+  },
+  watch: {
+    mantras: function () {
+      clearInterval(this.intervalId);
+      this.getNextMantra();
+      this.intervalId = setInterval(this.getNextMantra, 2000);
+    },
   },
 };
+
+class Shuffler {
+  constructor(array) {
+    this.elements = array ? [...array] : [];
+    let remainingElements = this.elements.length,
+      elementToSwap,
+      nextElementIndex;
+
+    while (remainingElements > 0) {
+      nextElementIndex = Math.floor(Math.random() * remainingElements--);
+      elementToSwap = this.elements[remainingElements];
+      this.elements[remainingElements] = this.elements[nextElementIndex];
+      this.elements[nextElementIndex] = elementToSwap;
+    }
+  }
+
+  drawNext() {
+    return this.elements.pop();
+  }
+}
 </script>
 
 <style lang="scss">

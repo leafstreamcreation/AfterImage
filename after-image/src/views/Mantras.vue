@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <mantra-viewer :mantras="mantras" />
+    <h1>{{ currentMantra }}</h1>
     <mantra-editor :mantras="mantras" />
     <div><p>Intentions quick feature</p></div>
     <div><p>Bugs quick feature</p></div>
@@ -9,23 +9,23 @@
 
 <script>
 // @ is an alias to /src
-import MantraViewer from "@/components/Mantras/MantraViewer";
 import MantraEditor from "@/components/Mantras/MantraEditor";
 
 export default {
   name: "Mantras",
   components: {
-    MantraViewer,
     MantraEditor,
   },
-  data() {
-    return {
-      mantras: [
-        "I will be a real mantra someday",
-        "I dream of being more than a string",
-        "I'm happy just the way I am!",
-      ],
-    };
+  computed: {
+    currentMantra() {
+      return this.$store.state.currentMantra;
+    },
+    mantras() {
+      return this.$store.state.mantras;
+    },
+  },
+  mounted() {
+    console.log(this.mantras);
   },
 };
 </script>
