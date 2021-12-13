@@ -1,11 +1,29 @@
 <template>
-  <div id="nav">
-    <router-link to="/intentions">Intentions</router-link> |
-    <router-link to="/">Mantras</router-link> |
-    <router-link to="/bugs">Bugs</router-link>
+  <login v-if="loggedOut" />
+  <div v-else>
+    <div id="nav">
+      <router-link to="/intentions">Intentions</router-link> |
+      <router-link to="/">Mantras</router-link> |
+      <router-link to="/bugs">Bugs</router-link>
+    </div>
+    <router-view />
   </div>
-  <router-view />
 </template>
+
+<script>
+import Login from "./views/Login.vue";
+
+export default {
+  computed: {
+    loggedOut() {
+      return this.$store.state.apiSession === null;
+    },
+  },
+  components: {
+    Login,
+  },
+};
+</script>
 
 <style lang="scss">
 #app {
