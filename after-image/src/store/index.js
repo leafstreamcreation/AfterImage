@@ -30,6 +30,22 @@ export default createStore({
     pushTask(state, task) {
       state.tasks.push(task);
     },
+    deleteMantra(state, id) {
+      for (let index = 0; index < state.mantras.length; index++) {
+        if (state.mantras[index]._id === id) {
+          state.mantras.splice(index, 1);
+          break;
+        }
+      }
+    },
+    deleteTask(state, id) {
+      for (let index = 0; index < state.tasks.length; index++) {
+        if (state.tasks[index]._id === id) {
+          state.tasks.splice(index, 1);
+          break;
+        }
+      }
+    },
   },
   actions: {
     async login({ commit, dispatch }, { pass }) {
@@ -57,8 +73,10 @@ export default createStore({
     },
     async newMantra({ commit, state }, { mantra }) {
       if (state.apiSession != null) {
-        const { status, data } = await mantraService.create(state.apiSession, mantra);
-        console.log(data);
+        const { status, data } = await mantraService.create(
+          state.apiSession,
+          mantra
+        );
         if (status === 200) commit("pushMantra", data);
         else if (status === 403) {
           commit("saveSession", null);
@@ -68,8 +86,31 @@ export default createStore({
     },
     async newTask({ commit, state }, { task }) {
       if (state.apiSession != null) {
-        const { status, data } = await taskService.create(state.apiSession, task);
+        const { status, data } = await taskService.create(
+          state.apiSession,
+          task
+        );
         if (status === 200) commit("pushTask", data);
+        else if (status === 403) {
+          commit("saveSession", null);
+          delete localStorage.deafFeedAIKey;
+        }
+      }
+    },
+    async deleteMantra({ commit, state }, { id }) {
+      if (state.apiSession != null) {
+        const { status } = await mantraService.delete(state.apiSession, id);
+        if (status === 200) commit("deleteMantra", id);
+        else if (status === 403) {
+          commit("saveSession", null);
+          delete localStorage.deafFeedAIKey;
+        }
+      }
+    },
+    async deleteTask({ commit, state }, { id }) {
+      if (state.apiSession != null) {
+        const { status } = await taskService.delete(state.apiSession, id);
+        if (status === 200) commit("deleteTask", id);
         else if (status === 403) {
           commit("saveSession", null);
           delete localStorage.deafFeedAIKey;

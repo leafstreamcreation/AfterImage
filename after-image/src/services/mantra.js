@@ -18,34 +18,46 @@ const mantraService = {
   },
   create(auth, data, params) {
     return apiHandle
-      .post("/create", { text: data }, {
-        headers: {
-          authorization: auth,
-        },
-        params,
-      })
+      .post(
+        "/create",
+        { text: data },
+        {
+          headers: {
+            authorization: auth,
+          },
+          params,
+        }
+      )
       .then(successStatus)
       .catch(internalServerError);
   },
   update(auth, resource, data, params) {
     return apiHandle
-      .post(`/update/${resource}`, { text: data }, {
-        headers: {
-          authorization: auth,
-        },
-        params,
-      })
+      .post(
+        `/update/${resource}`,
+        { text: data },
+        {
+          headers: {
+            authorization: auth,
+          },
+          params,
+        }
+      )
       .then(successStatus)
       .catch(internalServerError);
   },
   delete(auth, resource, params) {
     return apiHandle
-      .post(`/delete/${resource}`, {
-        headers: {
-          authorization: auth,
-        },
-        params,
-      })
+      .post(
+        `/delete/${resource}`,
+        {},
+        {
+          headers: {
+            authorization: auth,
+          },
+          params,
+        }
+      )
       .then(successStatus)
       .catch(internalServerError);
   },
