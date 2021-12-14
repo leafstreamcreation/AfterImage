@@ -1,14 +1,14 @@
 <template>
   <div class="mantra-editor">
     <h5>Mantra Editor</h5>
-    <p>Top section is a canvas for making a mantra. Blank by default</p>
-    <p>
-      Below is a search bar and a list with buttons to select and delete mantras
-    </p>
-    <div v-if="visible">
-      <p v-for="mantra in state" :key="mantra">{{ mantra }}</p>
-    </div>
-    <button @click="toggleList()">UPDATE MY MANTRAS</button>
+    <form @submit.prevent="finishEdit()">
+        <label for="new-mantra-input">New</label>
+        <input type="text" id="new-mantra-input">
+        <div>
+          <p v-for="mantra in state" :key="mantra._id">{{ mantra.text }}</p>
+        </div>
+        <button>Submit</button>
+    </form>
   </div>
 </template>
 
@@ -19,19 +19,28 @@ export default {
   name: "MantraEditor",
   components: {},
   emits: ["finishEdit"],
-  props: {
-    mantras: Array,
-  },
   data() {
     return {
-      state: this.mantras,
-      visible: false,
+      state: [],
     };
   },
+  computed: {
+    mantras() {
+      return this.$store.state.mantras;
+    },
+  },
   methods: {
-    toggleList() {
-      this.visible = !this.visible;
+    finishEdit() {
+        console.log("boop!");
       this.$emit("finishEdit", this.state);
+    },
+  },
+  mounted() {
+      this.state = this.mantras;
+  },
+  watch: {
+    mantras: function (newMantras) {
+    this.state = newMantras;
     },
   },
 };

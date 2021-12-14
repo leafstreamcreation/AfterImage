@@ -53,7 +53,7 @@ export default {
       this.$store.commit("saveSession", localStorage.deafFeedAIKey);
       this.$store.dispatch("load");
     }
-  }
+  },
 };
 
 class Shuffler {
