@@ -58,19 +58,19 @@ function internalServerError(err) {
   console.log("err:", err.response.data);
   if (err.response && err.response.data && err.response.data.errorMessage) {
     return {
-      status: false,
+      status: err.response.status,
       errorMessage: err.response.data.errorMessage,
     };
   }
   return {
-    status: false,
+    status: err.response.status,
     errorMessage: "Internal server error. Please check your server",
   };
 }
 
 function successStatus(res) {
   return {
-    status: true,
+    status: res.status,
     data: res.data,
   };
 }

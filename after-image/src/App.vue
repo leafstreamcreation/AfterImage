@@ -48,6 +48,12 @@ export default {
       this.intervalId = setInterval(this.getNextMantra, 2000);
     },
   },
+  mounted() {
+    if (localStorage.deafFeedAIKey) {
+      this.$store.commit("saveSession", localStorage.deafFeedAIKey);
+      this.$store.dispatch("load");
+    }
+  }
 };
 
 class Shuffler {

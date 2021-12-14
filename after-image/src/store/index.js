@@ -28,18 +28,25 @@ export default createStore({
   actions: {
     async login({ commit, dispatch }, { pass }) {
       const { status, data } = await authService.login(pass);
-      if (status) commit("saveSession", data.session._id);
-      dispatch("load");
+      if (status === 200) {
+        commit("saveSession", data.session._id);
+        localStorage.deafFeedAIKey = data.session._id;
+        dispatch("load");
+      }
     },
     async load({ commit, state }) {
       if (state.apiSession != null) {
         const { status: mantraStatus, data: mantraData } =
           await mantraService.index(state.apiSession);
-        if (mantraStatus) commit("saveMantras", mantraData.mantras);
+        if (mantraStatus === 200) commit("saveMantras", mantraData.mantras);
         const { status: taskStatus, data: taskData } = await taskService.index(
           state.apiSession
         );
-        if (taskStatus) commit("saveTasks", taskData.tasks);
+        if (taskStatus === 200) commit("saveTasks", taskData.tasks);
+        else if (mantraStatus === 403 || taskStatus === 403) {
+          commit("saveSession", null);
+          delete localStorage.deafFeedAIKey;
+        }
       }
     },
   },
