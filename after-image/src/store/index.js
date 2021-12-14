@@ -24,6 +24,12 @@ export default createStore({
     newCurrentMantra(state, newMantra) {
       state.currentMantra = newMantra;
     },
+    pushMantra(state, mantra) {
+      state.mantras.push(mantra);
+    },
+    pushTask(state, task) {
+      state.tasks.push(task);
+    },
   },
   actions: {
     async login({ commit, dispatch }, { pass }) {
@@ -44,6 +50,27 @@ export default createStore({
         );
         if (taskStatus === 200) commit("saveTasks", taskData.tasks);
         else if (mantraStatus === 403 || taskStatus === 403) {
+          commit("saveSession", null);
+          delete localStorage.deafFeedAIKey;
+        }
+      }
+    },
+    async newMantra({ commit, state }, { mantra }) {
+      if (state.apiSession != null) {
+        const { status, data } = await mantraService.create(state.apiSession, mantra);
+        console.log(data);
+        if (status === 200) commit("pushMantra", data);
+        else if (status === 403) {
+          commit("saveSession", null);
+          delete localStorage.deafFeedAIKey;
+        }
+      }
+    },
+    async newTask({ commit, state }, { task }) {
+      if (state.apiSession != null) {
+        const { status, data } = await taskService.create(state.apiSession, task);
+        if (status === 200) commit("pushTask", data);
+        else if (status === 403) {
           commit("saveSession", null);
           delete localStorage.deafFeedAIKey;
         }

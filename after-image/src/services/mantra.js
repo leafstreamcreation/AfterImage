@@ -18,7 +18,7 @@ const mantraService = {
   },
   create(auth, data, params) {
     return apiHandle
-      .post("/create", data, {
+      .post("/create", { text: data }, {
         headers: {
           authorization: auth,
         },
@@ -29,7 +29,7 @@ const mantraService = {
   },
   update(auth, resource, data, params) {
     return apiHandle
-      .post(`/update/${resource}`, data, {
+      .post(`/update/${resource}`, { text: data }, {
         headers: {
           authorization: auth,
         },
