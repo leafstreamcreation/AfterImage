@@ -1,8 +1,8 @@
 <template>
   <div class="login">
     <form @submit.prevent="login()">
-      <label for="pass">Password</label>
-      <input type="text" id="pass" v-model="password" />
+      <label for="password">Password</label>
+      <input type="password" id="password" v-model="password" />
       <button>Log In</button>
     </form>
   </div>
