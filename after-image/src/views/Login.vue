@@ -1,9 +1,14 @@
 <template>
   <div class="login">
+    <div class="logo">
+      <h1>After.Image</h1>
+    </div>
     <form @submit.prevent="login()">
-      <label for="password">Password</label>
-      <input type="password" id="password" v-model="password" />
-      <button>Log In</button>
+      <label for="password">Authentication Required:</label>
+      <div class="login-input-wrapper">
+        <input type="password" id="password" v-model="password" />
+        <button type="submit">Log In</button>
+      </div>
     </form>
   </div>
 </template>
