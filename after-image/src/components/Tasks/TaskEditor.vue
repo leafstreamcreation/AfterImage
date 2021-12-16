@@ -1,15 +1,14 @@
 <template>
   <div class="task-editor">
     <form @submit.prevent="finishEdit()">
-      <label for="new-task-input">New</label>
-      <input type="text" id="new-task-input" v-model="newTask" />
+      <input type="text" v-model="newTask" />
+      <button>Add</button>
       <div>
         <div v-for="task in state" :key="task._id">
           <span>{{ task.text }}</span>
           <button @click.prevent="deleteTask(task._id)">Delete</button>
         </div>
       </div>
-      <button>Submit</button>
     </form>
   </div>
 </template>
@@ -34,12 +33,18 @@ export default {
   },
   methods: {
     finishEdit() {
-      this.$store.dispatch("newTask", { task: this.newTask });
-      this.$emit("finishEdit", this.state);
-      this.newTask = "";
+      if (this.newTask === "") {
+        //set style for invalid empty string
+      } else {
+        this.$store.dispatch("newTask", { task: this.newTask });
+        this.$emit("finishEdit", this.state);
+        this.newTask = "";
+        //set style for creation processing
+      }
     },
     deleteTask(id) {
       this.$store.dispatch("deleteTask", { id });
+      //set style for deletion processing
     },
   },
   mounted() {
@@ -48,6 +53,7 @@ export default {
   watch: {
     tasks: function (newTasks) {
       this.state = newTasks;
+      //clear style for creation/deletion processing
     },
   },
 };
