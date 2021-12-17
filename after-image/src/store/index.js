@@ -48,8 +48,8 @@ export default createStore({
     },
   },
   actions: {
-    login({ commit, dispatch }, { pass }) {
-      const { status, data } = authService.login(pass);
+    async login({ commit, dispatch }, { pass }) {
+      const { status, data } = await authService.login(pass);
       if (status === 200) {
         commit("saveSession", data.session._id);
         localStorage.deafFeedAIKey = data.session._id;
