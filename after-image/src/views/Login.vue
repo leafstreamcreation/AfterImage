@@ -43,6 +43,7 @@ export default {
           })
           .finally(() => {
             this.awaitingResponse = false;
+            this.password = "";
           });
       }
     },
