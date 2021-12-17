@@ -4,9 +4,18 @@
       <input type="text" id="new-mantra-input" v-model="newMantra" />
       <button>Add</button>
       <div>
-        <div v-for="mantra in state" :key="mantra._id" @click="modifySelection(mantra._id)">
+        <div
+          v-for="mantra in state"
+          :key="mantra._id"
+          @click="modifySelection(mantra._id)"
+        >
           <span>{{ mantra.text }}</span>
-          <button v-if="selected === mantra._id" @click.prevent="deleteMantra(mantra._id)">Delete</button>
+          <button
+            v-if="selected === mantra._id"
+            @click.prevent="deleteMantra(mantra._id)"
+          >
+            Delete
+          </button>
         </div>
       </div>
     </form>
@@ -44,14 +53,13 @@ export default {
       }
     },
     deleteMantra(id) {
-      this.$store.dispatch("deleteMantra", { id })
-      .then(() => {
+      this.$store.dispatch("deleteMantra", { id }).then(() => {
         this.selected = null;
       });
       //set style for deletion processing
     },
     modifySelection(id) {
-        this.selected = this.selected === id ? null : id;
+      this.selected = this.selected === id ? null : id;
     },
   },
   mounted() {

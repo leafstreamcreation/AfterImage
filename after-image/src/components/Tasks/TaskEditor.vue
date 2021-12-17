@@ -4,9 +4,18 @@
       <input type="text" v-model="newTask" />
       <button>Add</button>
       <div>
-        <div v-for="task in state" :key="task._id" @click="modifySelection(task._id)">
+        <div
+          v-for="task in state"
+          :key="task._id"
+          @click="modifySelection(task._id)"
+        >
           <span>{{ task.text }}</span>
-          <button v-if="selected === task._id" @click.prevent="deleteTask(task._id)">Delete</button>
+          <button
+            v-if="selected === task._id"
+            @click.prevent="deleteTask(task._id)"
+          >
+            Delete
+          </button>
         </div>
       </div>
     </form>
@@ -48,7 +57,7 @@ export default {
       //set style for deletion processing
     },
     modifySelection(id) {
-        this.selected = this.selected === id ? null : id;
+      this.selected = this.selected === id ? null : id;
     },
   },
   mounted() {

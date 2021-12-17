@@ -1,6 +1,8 @@
 @import "./colors.scss";
 
 @import "./components/login.scss";
+@import "./components/mantras.scss";
+@import "./components/intentions.scss";
 
 html {
     background-color:cadetblue;
@@ -29,4 +31,8 @@ html {
         color: #42b983;
       }
     }
+  }
+
+  .error {
+      background-color: red;
   }

@@ -45,7 +45,7 @@ export default {
     mantras: function () {
       clearInterval(this.intervalId);
       this.getNextMantra();
-      this.intervalId = setInterval(this.getNextMantra, 2000);
+      this.intervalId = setInterval(this.getNextMantra, 30000);
     },
   },
   mounted() {
