@@ -2,8 +2,10 @@
   <div class="bugs">
     <h1>There are bugs here</h1>
     <div v-for="bug in bugs" :key="bug._id">
-      <p>{{ bug.title }}</p>
+      <span>{{ bug.title }} - </span>
+      <span>{{ new Date(bug.createdAt).toLocaleDateString() }}</span>
     </div>
+    <bug-editor />
     <div><p>Report a bug</p></div>
     <div><p>Report a fix</p></div>
     <div><p>Metrics</p></div>
@@ -12,10 +14,13 @@
 
 <script>
 // @ is an alias to /src
+import BugEditor from "../components/Bugs/BugEditor";
 
 export default {
   name: "Bugs",
-  components: {},
+  components: {
+    BugEditor,
+  },
   computed: {
     bugs() {
       return this.$store.state.bugs;

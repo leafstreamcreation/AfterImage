@@ -1,23 +1,24 @@
 <template>
   <div class="bug-editor">
-    <form @submit.prevent="finishEdit()">
-      <input type="text" id="new-bug-input" v-model="newMantra" />
-      <button>Report</button>
+    <form @submit.prevent="">
       <div>
-        <div
-          v-for="mantra in state"
-          :key="mantra._id"
-          @click="modifySelection(mantra._id)"
-        >
-          <span>{{ mantra.text }}</span>
-          <button
-            v-if="selected === mantra._id"
-            @click.prevent="deleteMantra(mantra._id)"
-          >
-            Delete
-          </button>
+        <label for="new-bug-title">Title: </label>
+        <input type="text" id="new-bug-title" v-model="state.title" />
+      </div>
+      <div>
+        <label for="new-bug-details">Details: </label>
+        <input type="text" id="new-bug-details" v-model="state.details" />
+      </div>
+      <div>
+        <label for="new-bug-condition">Condition: </label>
+        <input type="text" id="new-bug-condition" v-model="newCondition" />
+        <button @click="addCondition()">Add</button>
+        <div v-for="condition in state.conditions" :key="condition">
+          <p>{{ condition }}</p>
         </div>
       </div>
+      <button @click="clear()">Clear</button>
+      <button type="submit" @click="finishEdit()">Report</button>
     </form>
   </div>
 </template>
@@ -26,49 +27,45 @@
 // @ is an alias to /src
 
 export default {
-  name: "MantraEditor",
+  name: "BugEditor",
   components: {},
   emits: ["finishEdit"],
   data() {
     return {
-      newMantra: "",
-      state: [],
-      selected: null,
+      state: {
+        title: "",
+        details: "",
+        conditions: [],
+      },
+      newCondition: "",
     };
-  },
-  computed: {
-    mantras() {
-      return this.$store.state.mantras;
-    },
   },
   methods: {
     finishEdit() {
-      if (this.mantra === "") {
+      if (this.state.title === "") {
         //set style for invalid empty string
       } else {
-        this.$store.dispatch("newMantra", { mantra: this.newMantra });
+        this.$store.dispatch("newBug", { bug: this.state });
         this.$emit("finishEdit", this.state);
-        this.newMantra = "";
+        this.clear();
         //set style for creation processing
       }
     },
-    deleteMantra(id) {
-      this.$store.dispatch("deleteMantra", { id }).then(() => {
-        this.selected = null;
-      });
-      //set style for deletion processing
+    addCondition() {
+      if (this.newCondition === "") {
+        //set style for invalid empty string
+      } else {
+        this.state.conditions.push(this.newCondition);
+        this.newCondition = "";
+      }
     },
-    modifySelection(id) {
-      this.selected = this.selected === id ? null : id;
-    },
-  },
-  mounted() {
-    this.state = this.mantras;
-  },
-  watch: {
-    mantras: function (newMantras) {
-      this.state = newMantras;
-      //clear style for creation/deletion processing
+    clear() {
+      this.state = {
+        title: "",
+        details: "",
+        conditions: [],
+      };
+      this.newCondition = "";
     },
   },
 };
