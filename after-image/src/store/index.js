@@ -3,6 +3,7 @@ import { createStore } from "vuex";
 import authService from "../services/auth";
 import mantraService from "../services/mantra";
 import taskService from "../services/task";
+import bugService from "../services/bug";
 
 export default createStore({
   state: {
@@ -10,6 +11,7 @@ export default createStore({
     mantras: [],
     currentMantra: "loading",
     tasks: [],
+    bugs: [],
   },
   mutations: {
     saveSession(state, newSession) {
@@ -21,6 +23,9 @@ export default createStore({
     saveTasks(state, newTasks) {
       state.tasks = newTasks;
     },
+    saveBugs(state, newBugs) {
+      state.bugs = newBugs;
+    },
     newCurrentMantra(state, newMantra) {
       state.currentMantra = newMantra;
     },
@@ -29,6 +34,9 @@ export default createStore({
     },
     pushTask(state, task) {
       state.tasks.push(task);
+    },
+    pushBug(state, bug) {
+      state.bugs.push(bug);
     },
     deleteMantra(state, id) {
       for (let index = 0; index < state.mantras.length; index++) {
@@ -65,6 +73,10 @@ export default createStore({
           state.apiSession
         );
         if (taskStatus === 200) commit("saveTasks", taskData.tasks);
+        const { status: bugStatus, data: bugData } = await bugService.index(
+          state.apiSession
+        );
+        if (bugStatus === 200) commit("saveBugs", bugData.bugs);
         else if (mantraStatus === 403 || taskStatus === 403) {
           commit("saveSession", null);
           delete localStorage.deafFeedAIKey;
@@ -91,6 +103,16 @@ export default createStore({
           task
         );
         if (status === 200) commit("pushTask", data);
+        else if (status === 403) {
+          commit("saveSession", null);
+          delete localStorage.deafFeedAIKey;
+        }
+      }
+    },
+    async newBug({ commit, state }, { bug }) {
+      if (state.apiSession != null) {
+        const { status, data } = await bugService.create(state.apiSession, bug);
+        if (status === 200) commit("pushBug", data);
         else if (status === 403) {
           commit("saveSession", null);
           delete localStorage.deafFeedAIKey;

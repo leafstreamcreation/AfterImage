@@ -1,0 +1,75 @@
+<template>
+  <div class="bug-editor">
+    <form @submit.prevent="finishEdit()">
+      <input type="text" id="new-bug-input" v-model="newMantra" />
+      <button>Report</button>
+      <div>
+        <div
+          v-for="mantra in state"
+          :key="mantra._id"
+          @click="modifySelection(mantra._id)"
+        >
+          <span>{{ mantra.text }}</span>
+          <button
+            v-if="selected === mantra._id"
+            @click.prevent="deleteMantra(mantra._id)"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+// @ is an alias to /src
+
+export default {
+  name: "MantraEditor",
+  components: {},
+  emits: ["finishEdit"],
+  data() {
+    return {
+      newMantra: "",
+      state: [],
+      selected: null,
+    };
+  },
+  computed: {
+    mantras() {
+      return this.$store.state.mantras;
+    },
+  },
+  methods: {
+    finishEdit() {
+      if (this.mantra === "") {
+        //set style for invalid empty string
+      } else {
+        this.$store.dispatch("newMantra", { mantra: this.newMantra });
+        this.$emit("finishEdit", this.state);
+        this.newMantra = "";
+        //set style for creation processing
+      }
+    },
+    deleteMantra(id) {
+      this.$store.dispatch("deleteMantra", { id }).then(() => {
+        this.selected = null;
+      });
+      //set style for deletion processing
+    },
+    modifySelection(id) {
+      this.selected = this.selected === id ? null : id;
+    },
+  },
+  mounted() {
+    this.state = this.mantras;
+  },
+  watch: {
+    mantras: function (newMantras) {
+      this.state = newMantras;
+      //clear style for creation/deletion processing
+    },
+  },
+};
+</script>
