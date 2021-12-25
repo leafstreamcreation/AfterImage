@@ -35,6 +35,20 @@
           <p>{{ condition }}</p>
         </div>
       </div>
+      <div>
+        <label for="late-entry-checkbox">This bug happened earlier</label>
+        <input
+          id="late-entry-checkbox"
+          type="checkbox"
+          v-model="selectingDate"
+        />
+        <div v-if="selectingDate">
+          <label for="new-bug-date">Occurred: </label>
+          <input type="date" id="new-bug-date" v-model="state.date" />
+          <label for="new-bug-time">At: </label>
+          <input type="time" id="new-bug-time" v-model="state.time" />
+        </div>
+      </div>
       <button @click="clear()">Clear</button>
       <button type="submit" @click="finishEdit()">Report</button>
     </form>
@@ -54,11 +68,19 @@ export default {
         title: "",
         details: "",
         conditions: [],
+        date: new Date(Date.now()).toISOString().slice(0, 10),
+        time: "12:00",
       },
       newCondition: "",
+      selectingDate: false,
     };
   },
   computed: {
+    date() {
+      const date = new Date(this.state.date);
+      date.setUTCHours(...this.state.time.split(":"));
+      return date.toISOString();
+    },
     bugs() {
       return this.$store.state.bugs;
     },
@@ -98,9 +120,16 @@ export default {
       if (this.state.title === "") {
         //set style for invalid empty string
       } else {
-        this.state.title = this.state.title.toLowerCase();
-        this.state.conditions = [...new Set(this.state.conditions)];
-        this.$store.dispatch("newBug", { bug: this.state });
+        const newOccurred = this.selectingDate
+          ? this.date
+          : new Date(Date.now()).toISOString();
+        const newBug = {
+          title: this.state.title.toLowerCase(),
+          description: this.state.description,
+          conditions: [...new Set(this.state.conditions)],
+          occurred: newOccurred,
+        };
+        this.$store.dispatch("newBug", { bug: newBug });
         this.$emit("finishEdit", this.state);
         this.clear();
         //set style for creation processing
@@ -126,6 +155,8 @@ export default {
         title: "",
         details: "",
         conditions: [],
+        date: new Date(Date.now()).toISOString().slice(0, 10),
+        time: "12:00",
       };
       this.newCondition = "";
     },

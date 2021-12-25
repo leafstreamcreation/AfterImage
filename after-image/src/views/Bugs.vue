@@ -3,7 +3,7 @@
     <h1>There are bugs here</h1>
     <div v-for="bug in bugs" :key="bug._id">
       <span>{{ bug.title }} - </span>
-      <span>{{ new Date(bug.createdAt).toLocaleDateString() }}</span>
+      <span>{{ new Date(bug.occurred).toLocaleDateString() }}</span>
     </div>
     <bug-editor />
     <div><p>Report a bug</p></div>

@@ -17,11 +17,11 @@ const bugService = {
       .catch(internalServerError);
   },
   create(auth, data, params) {
-    const { title, details, conditions } = data;
+    const { title, details, conditions, occurred } = data;
     return apiHandle
       .post(
         "/create",
-        { title, details, conditions },
+        { title, details, conditions, occurred },
         {
           headers: {
             authorization: auth,
@@ -33,11 +33,11 @@ const bugService = {
       .catch(internalServerError);
   },
   update(auth, resource, data, params) {
-    const { title, details, conditions } = data;
+    const { title, details, conditions, occurred } = data;
     return apiHandle
       .post(
         `/update/${resource}`,
-        { title, details, conditions },
+        { title, details, conditions, occurred },
         {
           headers: {
             authorization: auth,
