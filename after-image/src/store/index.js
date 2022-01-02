@@ -4,6 +4,7 @@ import authService from "../services/auth";
 import mantraService from "../services/mantra";
 import taskService from "../services/task";
 import bugService from "../services/bug";
+import commonService from "../services/common";
 
 export default createStore({
   state: {
@@ -12,6 +13,7 @@ export default createStore({
     currentMantra: "loading",
     tasks: [],
     bugs: [],
+    regenTasks: [],
   },
   mutations: {
     saveSession(state, newSession) {
@@ -26,6 +28,9 @@ export default createStore({
     saveBugs(state, newBugs) {
       state.bugs = newBugs;
     },
+    saveRegenTasks(state, newRegenTasks) {
+      state.regenTasks = newRegenTasks;
+    },
     newCurrentMantra(state, newMantra) {
       state.currentMantra = newMantra;
     },
@@ -34,6 +39,9 @@ export default createStore({
     },
     pushTask(state, task) {
       state.tasks.push(task);
+    },
+    pushRegenTask(state, task) {
+      state.regenTasks.push(task);
     },
     pushBug(state, bug) {
       state.bugs.push(bug);
@@ -54,6 +62,14 @@ export default createStore({
         }
       }
     },
+    deleteRegenTask(state, id) {
+      for (let index = 0; index < state.regenTasks.length; index++) {
+        if (state.regenTasks[index]._id === id) {
+          state.regenTasks.splice(index, 1);
+          break;
+        }
+      }
+    },
   },
   actions: {
     async login({ commit, dispatch }, { pass }) {
@@ -66,18 +82,14 @@ export default createStore({
     },
     async load({ commit, state }) {
       if (state.apiSession != null) {
-        const { status: mantraStatus, data: mantraData } =
-          await mantraService.index(state.apiSession);
-        if (mantraStatus === 200) commit("saveMantras", mantraData.mantras);
-        const { status: taskStatus, data: taskData } = await taskService.index(
-          state.apiSession
-        );
-        if (taskStatus === 200) commit("saveTasks", taskData.tasks);
-        const { status: bugStatus, data: bugData } = await bugService.index(
-          state.apiSession
-        );
-        if (bugStatus === 200) commit("saveBugs", bugData.bugs);
-        else if (mantraStatus === 403 || taskStatus === 403) {
+        const { status, data } = await commonService.index(state.apiSession);
+        if (status === 200) {
+          const { regenTasks, tasks, mantras, bugs } = data;
+          commit("saveRegenTasks", regenTasks);
+          commit("saveMantras", mantras);
+          commit("saveTasks", tasks);
+          commit("saveBugs", bugs);
+        } else if (status === 403) {
           commit("saveSession", null);
           delete localStorage.deafFeedAIKey;
         }
