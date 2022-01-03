@@ -4,6 +4,7 @@ import authService from "../services/auth";
 import mantraService from "../services/mantra";
 import taskService from "../services/task";
 import bugService from "../services/bug";
+import regenTaskService from "../services/regenTask";
 import commonService from "../services/common";
 
 export default createStore({
@@ -121,6 +122,19 @@ export default createStore({
         }
       }
     },
+    async newRegenTask({ commit, state }, { regenTask }) {
+      if (state.apiSession != null) {
+        const { status, data } = await regenTaskService.create(
+          state.apiSession,
+          regenTask
+        );
+        if (status === 200) commit("pushRegenTask", data);
+        else if (status === 403) {
+          commit("saveSession", null);
+          delete localStorage.deafFeedAIKey;
+        }
+      }
+    },
     async newBug({ commit, state }, { bug }) {
       if (state.apiSession != null) {
         const { status, data } = await bugService.create(state.apiSession, bug);
@@ -145,6 +159,16 @@ export default createStore({
       if (state.apiSession != null) {
         const { status } = await taskService.delete(state.apiSession, id);
         if (status === 200) commit("deleteTask", id);
+        else if (status === 403) {
+          commit("saveSession", null);
+          delete localStorage.deafFeedAIKey;
+        }
+      }
+    },
+    async deleteRegenTask({ commit, state }, { id }) {
+      if (state.apiSession != null) {
+        const { status } = await regenTaskService.delete(state.apiSession, id);
+        if (status === 200) commit("deleteRegenTask", id);
         else if (status === 403) {
           commit("saveSession", null);
           delete localStorage.deafFeedAIKey;
