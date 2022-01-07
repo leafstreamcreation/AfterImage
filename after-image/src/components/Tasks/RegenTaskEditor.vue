@@ -1,15 +1,28 @@
 <template>
   <div class="regen-task-editor">
     <form @submit.prevent="finishEdit()">
-      <input type="text" v-model="newRegenTask.text" />
-      <input type="number" v-model="newRegenTask.number" />
-      <p>{{ newRegenTask.unit }}</p>
-      <input type="radio" value="days" v-model="newRegenTask.unit" />
-      <input type="radio" value="weeks" v-model="newRegenTask.unit" />
-      <input type="radio" value="months" v-model="newRegenTask.unit" />
-      <input type="datetime-local" v-model="newRegenTask.scheduleDate" />
-      <button>Add</button>
       <div>
+        <label for="textInput">Task </label>
+        <input id="textInput" type="text" v-model="newRegenTask.text" />
+      </div>
+      <div>
+        <label for="timeInput">Repeat every </label>
+        <input id="timeInput" type="number" v-model="newRegenTask.number" />
+        <span> {{ newRegenTask.unit }} </span>
+        <input type="radio" value="days" v-model="newRegenTask.unit" />
+        <input type="radio" value="weeks" v-model="newRegenTask.unit" />
+        <input type="radio" value="months" v-model="newRegenTask.unit" />
+      </div>
+      <div>
+        <label for="dateInput">At </label>
+        <input
+          id="dateInput"
+          type="datetime-local"
+          v-model="newRegenTask.scheduleDate"
+        />
+      </div>
+      <button>Schedule</button>
+      <div v-if="list">
         <div
           v-for="task in state"
           :key="task._id"
@@ -51,6 +64,7 @@ export default {
       selected: null,
     };
   },
+  props: { list: Boolean },
   computed: {
     regenTasks() {
       return this.$store.state.regenTasks;

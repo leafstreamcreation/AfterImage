@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Mantras from "../views/Mantras.vue";
 import Bugs from "../views/Bugs.vue";
-import Intentions from "../views/Intentions.vue";
+import Tasks from "../views/Tasks.vue";
 
 const routes = [
   {
@@ -15,9 +15,9 @@ const routes = [
     component: Bugs,
   },
   {
-    path: "/intentions",
-    name: "Intentions",
-    component: Intentions,
+    path: "/tasks",
+    name: "Tasks",
+    component: Tasks,
   },
 ];
 

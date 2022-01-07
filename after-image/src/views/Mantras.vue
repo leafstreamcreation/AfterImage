@@ -2,8 +2,8 @@
   <div class="mantras">
     <h1>{{ currentMantra }}</h1>
     <mantra-editor />
-    <div><p>Intentions quick feature</p></div>
-    <div><p>Bugs quick feature</p></div>
+    <!-- <div><p>Intentions quick feature</p></div>
+    <div><p>Bugs quick feature</p></div> -->
   </div>
 </template>
 

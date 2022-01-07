@@ -11,11 +11,11 @@
         </button>
       </div>
       <div>
-        <label for="new-bug-title">Title: </label>
+        <label for="new-bug-title">Title </label>
         <input type="text" id="new-bug-title" v-model="state.title" />
       </div>
       <div>
-        <label for="new-bug-details">Details: </label>
+        <label for="new-bug-details">Details </label>
         <input type="text" id="new-bug-details" v-model="state.details" />
       </div>
       <div>
@@ -28,7 +28,7 @@
         </button>
       </div>
       <div>
-        <label for="new-bug-condition">Condition: </label>
+        <label for="new-bug-condition">Condition </label>
         <input type="text" id="new-bug-condition" v-model="newCondition" />
         <button @click="addCondition()">Add</button>
         <div v-for="condition in state.conditions" :key="condition">
@@ -36,16 +36,16 @@
         </div>
       </div>
       <div>
-        <label for="late-entry-checkbox">This bug happened earlier</label>
+        <label for="late-entry-checkbox">This bug happened earlier </label>
         <input
           id="late-entry-checkbox"
           type="checkbox"
           v-model="selectingDate"
         />
         <div v-if="selectingDate">
-          <label for="new-bug-date">Occurred: </label>
+          <label for="new-bug-date">Occurring </label>
           <input type="date" id="new-bug-date" v-model="state.date" />
-          <label for="new-bug-time">At: </label>
+          <label for="new-bug-time">At </label>
           <input type="time" id="new-bug-time" v-model="state.time" />
         </div>
       </div>

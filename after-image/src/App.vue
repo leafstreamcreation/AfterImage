@@ -2,7 +2,7 @@
   <login v-if="loggedOut" />
   <div v-else>
     <div id="nav">
-      <router-link to="/intentions">Intentions</router-link> |
+      <router-link to="/tasks">Tasks</router-link> |
       <router-link to="/">Mantras</router-link> |
       <router-link to="/bugs">Bugs</router-link>
     </div>

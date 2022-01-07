@@ -25,9 +25,13 @@
 <script>
 // @ is an alias to /src
 
+// import RegenTaskEditor from "@/components/Tasks/RegenTaskEditor";
+
 export default {
   name: "TaskEditor",
-  components: {},
+  components: {
+    // RegenTaskEditor,
+  },
   emits: ["finishEdit"],
   data() {
     return {

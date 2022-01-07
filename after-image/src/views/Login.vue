@@ -1,10 +1,10 @@
 <template>
   <div class="login">
     <div class="logo">
-      <h1>After.Image</h1>
+      <h1>👋</h1>
     </div>
     <form @submit.prevent="login()">
-      <label for="password">Authentication Required:</label>
+      <label for="password"></label>
       <div class="login-input-wrapper">
         <input
           :class="{ error: validationError }"
@@ -12,7 +12,7 @@
           id="password"
           v-model="password"
         />
-        <button :disabled="awaitingResponse" type="submit">Log In</button>
+        <button :disabled="awaitingResponse" type="submit">🤟</button>
       </div>
     </form>
   </div>
