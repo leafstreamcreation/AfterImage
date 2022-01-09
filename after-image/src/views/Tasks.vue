@@ -3,7 +3,7 @@
     <h1>Tasks</h1>
     <task-editor />
     <h2 @click="scheduleTask = !scheduleTask">Schedule</h2>
-    <regen-task-editor v-if="scheduleTask" />
+    <regen-task-editor v-if="scheduleTask" list />
     <!-- <div><p>Reflection</p></div>
     <div><p>Metrics</p></div> -->
   </div>
