@@ -29,8 +29,8 @@
           @click="modifySelection(task._id)"
         >
           <span
-            >{{ task.text }} - {{ task.regenInterval }} -
-            {{ task.scheduleDate }}</span
+            >{{ task.text }} - {{ msToTime(task.regenInterval) }} -
+            {{ new Date(task.scheduleDate).toLocaleString() }}</span
           >
 
           <button
@@ -106,6 +106,17 @@ export default {
     },
     modifySelection(id) {
       this.selected = this.selected === id ? null : id;
+    },
+    msToTime(time) {
+      const CONVERSION = {
+        days: 1000 * 60 * 60 * 24,
+        weeks: 1000 * 60 * 60 * 24 * 7,
+        months: 1000 * 60 * 60 * 24 * 30,
+      };
+      if (time < CONVERSION.weeks) return `${time / CONVERSION.days} days`;
+      else if (time < CONVERSION.months)
+        return `${time / CONVERSION.weeks} weeks`;
+      else return `${time / CONVERSION.months} months`;
     },
   },
   mounted() {
