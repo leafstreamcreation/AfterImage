@@ -20,6 +20,7 @@
           type="datetime-local"
           v-model="newRegenTask.scheduleDate"
         />
+        <span> ({{ timeZoneOffset }} UTC)</span>
       </div>
       <button>Schedule</button>
       <div v-if="list">
@@ -60,6 +61,7 @@ export default {
         unit: "days",
         scheduleDate: "2022-01-01T00:00",
       },
+      timeZoneOffset: -new Date().getTimezoneOffset() / 60,
       state: [],
       selected: null,
     };
