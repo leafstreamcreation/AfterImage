@@ -22,7 +22,6 @@
         />
         <span> ({{ timeZoneOffset }} UTC)</span>
       </div>
-      <p>{{ newRegenTask.scheduleDate }}</p>
       <button>Schedule</button>
       <div v-if="list">
         <div
@@ -60,9 +59,9 @@ export default {
         text: "",
         number: 1,
         unit: "days",
-        scheduleDate: "2022-01-01T00:00",
+        scheduleDate: "1970-01-01T00:00",
       },
-      timeZoneOffset: -new Date().getTimezoneOffset() / 60,
+      currentTime: null,
       state: [],
       selected: null,
     };
@@ -80,6 +79,14 @@ export default {
       };
       return this.newRegenTask.number * CONVERSION[this.newRegenTask.unit];
     },
+    timeZoneOffset() {
+      return Math.floor(-this.currentTime?.getTimezoneOffset() / 60);
+    },
+    noonTodayLocalISO() {
+      const dateTime = new Date(this.currentTime);
+      dateTime.setUTCHours(dateTime.getUTCHours() + this.timeZoneOffset);
+      return dateTime.toISOString().slice(0, 10) + "T12:00";
+    },
   },
   methods: {
     finishEdit() {
@@ -90,7 +97,7 @@ export default {
           regenTask: {
             text: this.newRegenTask.text,
             regenInterval: this.regenInterval,
-            scheduleDate: this.newRegenTask.scheduleDate,
+            scheduleDate: this.dateToUTC(),
           },
         });
         this.$emit("finishEdit", this.state);
@@ -98,7 +105,7 @@ export default {
           text: "",
           number: 1,
           unit: "days",
-          scheduleDate: "2022-01-01T00:00",
+          scheduleDate: this.noonTodayLocalISO,
         };
         //set style for creation processing
       }
@@ -121,9 +128,20 @@ export default {
         return `${time / CONVERSION.weeks} weeks`;
       else return `${time / CONVERSION.months} months`;
     },
+    dateToUTC() {
+      const dateValues = this.newRegenTask.scheduleDate
+        .split(/[-T:]/)
+        .map((v) => Number.parseInt(v));
+      dateValues[1]--;
+      const date = new Date(Date.UTC(...dateValues));
+      date.setUTCHours(date.getUTCHours() - this.timeZoneOffset);
+      return date.toISOString();
+    },
   },
   mounted() {
     this.state = this.regenTasks;
+    this.currentTime = new Date();
+    this.newRegenTask.scheduleDate = this.noonTodayLocalISO;
   },
   watch: {
     regenTasks: function (newRegenTasks) {
