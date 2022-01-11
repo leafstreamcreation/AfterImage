@@ -22,6 +22,7 @@
         />
         <span> ({{ timeZoneOffset }} UTC)</span>
       </div>
+      <p>{{ newRegenTask.scheduleDate }}</p>
       <button>Schedule</button>
       <div v-if="list">
         <div
