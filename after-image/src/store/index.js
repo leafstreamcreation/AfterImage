@@ -7,6 +7,8 @@ import bugService from "../services/bug";
 import regenTaskService from "../services/regenTask";
 import commonService from "../services/common";
 
+import localforage from "localforage";
+
 export default createStore({
   state: {
     apiSession: null,
@@ -76,8 +78,12 @@ export default createStore({
     async login({ commit, dispatch }, { pass }) {
       const { status, data } = await authService.login(pass);
       if (status === 200) {
+        await localforage
+          .setItem("deafFeedAIKey", data.session._id)
+          .catch((err) => {
+            console.log("Failed to stash session key", err);
+          });
         commit("saveSession", data.session._id);
-        localStorage.deafFeedAIKey = data.session._id;
         dispatch("load");
       } else return Promise.reject("login error");
     },
@@ -92,7 +98,9 @@ export default createStore({
           commit("saveBugs", bugs);
         } else if (status === 403) {
           commit("saveSession", null);
-          delete localStorage.deafFeedAIKey;
+          localforage.removeItem("deafFeedAIKey").catch((err) => {
+            console.log("Failed to remove session key", err);
+          });
         }
       }
     },
@@ -105,7 +113,9 @@ export default createStore({
         if (status === 200) commit("pushMantra", data);
         else if (status === 403) {
           commit("saveSession", null);
-          delete localStorage.deafFeedAIKey;
+          localforage.removeItem("deafFeedAIKey").catch((err) => {
+            console.log("Failed to remove session key", err);
+          });
         }
       }
     },
@@ -118,7 +128,9 @@ export default createStore({
         if (status === 200) commit("pushTask", data);
         else if (status === 403) {
           commit("saveSession", null);
-          delete localStorage.deafFeedAIKey;
+          localforage.removeItem("deafFeedAIKey").catch((err) => {
+            console.log("Failed to remove session key", err);
+          });
         }
       }
     },
@@ -131,7 +143,9 @@ export default createStore({
         if (status === 200) commit("pushRegenTask", data);
         else if (status === 403) {
           commit("saveSession", null);
-          delete localStorage.deafFeedAIKey;
+          localforage.removeItem("deafFeedAIKey").catch((err) => {
+            console.log("Failed to remove session key", err);
+          });
         }
       }
     },
@@ -141,7 +155,9 @@ export default createStore({
         if (status === 200) commit("pushBug", data);
         else if (status === 403) {
           commit("saveSession", null);
-          delete localStorage.deafFeedAIKey;
+          localforage.removeItem("deafFeedAIKey").catch((err) => {
+            console.log("Failed to remove session key", err);
+          });
         }
       }
     },
@@ -151,7 +167,9 @@ export default createStore({
         if (status === 200) commit("deleteMantra", id);
         else if (status === 403) {
           commit("saveSession", null);
-          delete localStorage.deafFeedAIKey;
+          localforage.removeItem("deafFeedAIKey").catch((err) => {
+            console.log("Failed to remove session key", err);
+          });
         }
       }
     },
@@ -161,7 +179,9 @@ export default createStore({
         if (status === 200) commit("deleteTask", id);
         else if (status === 403) {
           commit("saveSession", null);
-          delete localStorage.deafFeedAIKey;
+          localforage.removeItem("deafFeedAIKey").catch((err) => {
+            console.log("Failed to remove session key", err);
+          });
         }
       }
     },
@@ -171,7 +191,9 @@ export default createStore({
         if (status === 200) commit("deleteRegenTask", id);
         else if (status === 403) {
           commit("saveSession", null);
-          delete localStorage.deafFeedAIKey;
+          localforage.removeItem("deafFeedAIKey").catch((err) => {
+            console.log("Failed to remove session key", err);
+          });
         }
       }
     },

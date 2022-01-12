@@ -12,6 +12,11 @@
 
 <script>
 import Login from "./views/Login.vue";
+import localforage from "localforage";
+localforage.config({
+  name: "afterimage",
+  storeName: "locals",
+});
 
 export default {
   components: {
@@ -48,9 +53,10 @@ export default {
       this.intervalId = setInterval(this.getNextMantra, 30000);
     },
   },
-  mounted() {
-    if (localStorage.deafFeedAIKey) {
-      this.$store.commit("saveSession", localStorage.deafFeedAIKey);
+  async mounted() {
+    const sessionKey = await localforage.getItem("deafFeedAIKey");
+    if (sessionKey !== null) {
+      this.$store.commit("saveSession", sessionKey);
       this.$store.dispatch("load");
     }
   },
